@@ -22,7 +22,7 @@ git clone https://github.com/swar/nba_api.git
 ## Usage
 
 ### Running the Data Preparation Script
-To create the datasets for the project, run the `win_loss_data_prep.py` script using the following command:
+To create the datasets for the project, run the `win_loss_data_prep.py` script using the following command replacing `/path/to/python/interpreter` with the path to your python interpreter and `/path/to/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering` with the path to the cloned repository.
 ```bash
 /path/to/python/interpreter /path/to/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering/scripts/win_loss_data_prep.py
 ```
@@ -39,7 +39,7 @@ The following files were created to ensure functionality of the code but are not
 - `2024-25_nbaHomeWinLossModelDataSet.csv`
 
 ### Running the Model Training and Optimization Script
-To train the machine learning model and evaluate its performance, run the following command after specifying the model type in the main function:
+To train the machine learning model, evaluate its performance, and generate the optimal wager set, run the following command after specifying the model type in the main function and replacing `/path/to/python/interpreter` with the path to your python interpreter and `/path/to/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering` with the path to the cloned repository.
 
 ```bash
 /path/to/python/interpreter /path/to/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering/scripts/win_loss_data_model.py
@@ -47,12 +47,14 @@ To train the machine learning model and evaluate its performance, run the follow
 In addition to the previously mentioned data files, the following file is required to generate the moneyline multipliers for the optimization strategy:
 - `betting_odds.csv`
 
+This data file was manually created using the **DraftKings** app to acquire the the moneyline odds on four separate days.
+
 The output of the modeling script creates four plots that show the Receiver Operating Characteristic (ROC) curve and the time series of correct predictions for the model, with predicted probabilities of the home team winning on the y-axis. These plots are generated for both the training and validation datasets and are saved in the `model_ROC_and_accuracy_plots` folder.
 
 Additionally, a csv file labled:
 - `<model_type>_optimal_wagers.csv`
 
-Details the optimal wagers as determined by the optimization strategy.
+Details the optimal games to wager upon, the amount of money to wager, and the expected value of profit for each wager, and the resulting profit or loss from the strategy.
 
 
 ## Context for the Project
@@ -154,6 +156,8 @@ Moderately probable events with the potential for high payouts are often overval
 ## Contributions
 
 The data collection, feature extraction, and logistic regression model training were heavily guided by a tutorial in the NBA_api documentation titled "Home Team Win-Loss Modeling." While the tutorial was closely followed for creating and manipulating the data frames, the code was adapted to meet the specific needs of this project. 
+
+The moneyline multipliers were manually collected from the **DraftKings** app and were not part of the tutorial.
 
 The **MLP model training** and **optimization strategy** were developed independently by me. The optimization strategy was implemented with the help of the **PuLP library** in Python.
 

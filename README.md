@@ -21,7 +21,7 @@ Specifically, the following files in the csv_data_files folder is are used to tr
 - 2020-25_gameLogFrame.csv
 - 2020-25_nbaHomeWinLossModelDataSet.csv
 
-The other following files in the csv_data_files folder were created to ensure functionality of the code but are not used in the final project.
+The other following files in the csv_data_files folder were created to ensure functionality of the code but are not used in the final project:
 - 2024-25_scheduleFrame.csv
 - 2024-25_gameLogFrame.csv
 - 2024-25_nbaHomeWinLossModelDataSet.csv
@@ -33,14 +33,16 @@ win_loss_data_model.py
 In addition to the previously mentioned data files, the following file is required to generate the moneyline multipliers for the optimization strategy:
 - betting_odds.csv
 
-The result of the modeling script create 4 plots that show the Reciever Operating Characteristic (ROC) curve and the time series of correct predictions for the model with predicted probabilities of home team winning on the y-axis. These two plots are created for the training and validation data sets.
+The output of the modeling script creates 4 plots that show the Reciever Operating Characteristic (ROC) curve and the time series of correct predictions for the model with predicted probabilities of home team winning on the y-axis. These two plots are created for the training and validation data sets. These plots are also saved in the model_ROC_and_accuracy_plots
 
 Additionally, a csv file labled:
 - <model_type>_optimal_wagers.csv
-Demonstrates the optimal wagers as determined by the optimization strategy.
+
+Details the optimal wagers as determined by the optimization strategy.
+
 
 ## Context for the Project
-This project was completed as a final project for ASEN 6519: Optimization Algorithms and Applications at the University of Colorado Boulder. In addition to the code base, a final paper was written and a presenation was given to the class detailing the data collection, feature extraction, model training, and optimization strategy.
+This project was completed as a final project for ASEN 6519: Optimization Algorithms and Applications at the University of Colorado Boulder. In addition to the code base, a final paper was written and a presenation was given to the class detailing the data collection, feature extraction, model training, and optimization strategy. This paper is included in the repository as "Bagley_Aidan_ASEN6519_Final_Project_Mixed_Integer_Linear_Parlays.pdf" and the presentation is included as "Mixed-Integer Linear Parlays, An Optimized Sports Betting Approach.pdf".
 
 ## Solution Approach
 ### Data Collection

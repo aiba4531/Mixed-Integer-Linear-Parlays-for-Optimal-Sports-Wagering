@@ -1,7 +1,7 @@
 # Mixed-Integer Linear Parlays, An Optimized Sports Betting Approach
 
 ## Overview of the Project
-This project uses the `NBA_api` to gather data on the outcomes of NBA games from the 2020-2024 seasons. The data was used to create a characteristic feature set that trained a supervised machine learning model to predict the outcome of a home team winning a given game in the 2024-2025 season. Using these predictions, a betting strategy was developed to maximize the expected value of profit, which was solved using a mixed-integer linear programming (MILP) formulation.
+This project uses the `NBA_api` to gather data on the outcomes of NBA games from the 2020-2024 seasons. The data is used to create a characteristic feature set that trains a supervised machine learning model to predict the outcome of a home team winning a given game in the 2024-2025 season. Using these predictions, a betting strategy is developed to maximize the expected value of profit, which was is solved using a mixed-integer linear programming (MILP) formulation.
 
 
 ## Installation
@@ -15,7 +15,7 @@ Afterward, clone the repository to your local machine using the following comman
 git clone https://github.com/aiba4531/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering.git
 ```
 
-Then clone the NBA API repository to your local machine using the following command inside the `Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering` directory:
+Naviate to the `Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering` directory and clone the NBA API repository to your local machine using the following command: 
 ```bash
 git clone https://github.com/swar/nba_api.git
 ```
@@ -38,6 +38,7 @@ The following files were created to ensure functionality of the code but are not
 - `2024-25_gameLogFrame.csv`
 - `2024-25_nbaHomeWinLossModelDataSet.csv`
 
+### Running the Model Training and Optimization Script
 To train the machine learning model and evaluate its performance, run the following command after specifying the model type in the main function:
 
 ```bash

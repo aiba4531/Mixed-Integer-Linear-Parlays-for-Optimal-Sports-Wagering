@@ -571,7 +571,7 @@ def solve_LP(odds):
         prob += z[i] <= x[i] * max_b, f"UpperBound_xb_{i}"
         prob += z[i] >= b[i] - (1 - x[i]) * max_b, f"LowerBound_b_{i}"
 
-    # Exactly 3-leg parlays
+    # Must wager on at least half of the games
     prob += p.lpSum(x) == int(num_wagers/2)  , "Three_Legs_Constraint"    
 
     # Objective function: Maximize expected value = prob_win * potential_win - prob_loss * wager

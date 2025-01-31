@@ -80,10 +80,6 @@ The rolling statistics are important to alleviate the stiffness of the dataset a
 
 
 ### Model Training
-This project sought to compare two different supervised machine learning models to predict the outcome of a game. The first model was a logistic regression model and the second was a a Multi-Layer Perceptron (MLP) model. The models were trained on the same feature set using a 75/25 train/test split. The models were validated against results from the 2024-2025 season. Importantly, in addition to the accuracy of the models, the models were evaluated on their ability to predict probabilities of a home team win. This was important for the optimization strategy.
-
-
-### Model Training
 
 This project aimed to compare two different supervised machine learning models for predicting the outcome of a game:
 

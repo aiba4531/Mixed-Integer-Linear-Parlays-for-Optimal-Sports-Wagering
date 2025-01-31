@@ -7,13 +7,24 @@ This project uses the `NBA_api` to gather data on the outcomes of NBA games from
 ## Installation
 To install the necessary packages to run this project, use the following command:
 ```bash
-pip install nba_api numpy pandas matplotlib scikit-learn pulp json difflib requests time
+pip install nba_api numpy pandas matplotlib scikit-learn pulp requests
 ```
 
-## Usage
-To create the datasets for the project, run the following command:
+Afterward, clone the repository to your local machine using the following command:
 ```bash
-python win_loss_data_prep.py
+git clone https://github.com/aiba4531/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering.git
+```
+
+Then clone the NBA API repository to your local machine using the following command inside the `Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering` directory:
+```bash
+git clone https://github.com/swar/nba_api.git
+```
+## Usage
+
+### Running the Data Preparation Script
+To create the datasets for the project, run the `win_loss_data_prep.py` script using the following command:
+```bash
+/path/to/python/interpreter /path/to/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering/scripts/win_loss_data_prep.py
 ```
 This process may take several hours due to API call limits and the large volume of data being requested. However, the data is already saved in the `csv_data_file` folder, so this step can be skipped. 
 
@@ -30,7 +41,7 @@ The following files were created to ensure functionality of the code but are not
 To train the machine learning model and evaluate its performance, run the following command after specifying the model type in the main function:
 
 ```bash
-python win_loss_data_model.py
+/path/to/python/interpreter /path/to/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering/scripts/win_loss_data_model.py
 ```
 In addition to the previously mentioned data files, the following file is required to generate the moneyline multipliers for the optimization strategy:
 - `betting_odds.csv`

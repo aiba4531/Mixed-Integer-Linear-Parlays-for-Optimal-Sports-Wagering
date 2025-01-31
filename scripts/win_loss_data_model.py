@@ -115,7 +115,7 @@ def plot_ROC(y_test, y_pred_proba, auc_score, cross_entropy, model_name, data_ty
      
     # Save plot
     plt.tight_layout()
-    plt.savefig(f'{model_name}_{data_type}_roc_curve.png')
+    plt.savefig(f'model_ROC_and_accuracy_plots/{model_name}_{data_type}_roc_curve.png')
         
 
 

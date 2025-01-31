@@ -1,6 +1,6 @@
 ### This script is used to generate either a logistic regression or neural network model to predict the outcome of NBA games.
 ### The model is then used to generate optimal wagers based on the model's predictions and the odds of the games.
-### This model outputs the results of the model evaluation, the ROC curve, and the optimal wagers for the given odds.
+### This script l outputs the results of the model evaluation, the ROC curve, the time history of correct predictions, and the optimal wagers for the given odds.
 
 
 # Import pandas data frames

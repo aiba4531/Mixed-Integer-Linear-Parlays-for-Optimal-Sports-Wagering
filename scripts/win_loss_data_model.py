@@ -412,7 +412,7 @@ def compare_model_to_actual_results(gameLogs, probability_dfs, model):
 
         # Add tight layout and save the figure
         plt.tight_layout()
-        plt.savefig(f'{model}_{data_type}_probability_predictions.png')
+        plt.savefig(f'model_ROC_and_accuracy_plots/{model}_{data_type}_probability_predictions.png')
         plt.close()
     
     
@@ -446,7 +446,6 @@ def compare_model_to_actual_results(gameLogs, probability_dfs, model):
         i += 1
                       
     return probability_df
-
 
 
 def combine_odds_with_ML_probabilities(filename, gameLogs_probability_df):

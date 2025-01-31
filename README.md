@@ -27,23 +27,31 @@ The following files were created to ensure functionality of the code but are not
 - `2024-25_gameLogFrame.csv`
 - `2024-25_nbaHomeWinLossModelDataSet.csv`
 
-To train the machine learning model and evaluate the model's performance, run the following command after specifiying the model type in the main function:
+To train the machine learning model and evaluate its performance, run the following command after specifying the model type in the main function:
+
 ```bash
-win_loss_data_model.py
+python win_loss_data_model.py
 ```
 In addition to the previously mentioned data files, the following file is required to generate the moneyline multipliers for the optimization strategy:
-- betting_odds.csv
+- `betting_odds.csv`
 
-The output of the modeling script creates 4 plots that show the Reciever Operating Characteristic (ROC) curve and the time series of correct predictions for the model with predicted probabilities of home team winning on the y-axis. These two plots are created for the training and validation data sets. These plots are also saved in the model_ROC_and_accuracy_plots
+The output of the modeling script creates four plots that show the Receiver Operating Characteristic (ROC) curve and the time series of correct predictions for the model, with predicted probabilities of the home team winning on the y-axis. These plots are generated for both the training and validation datasets and are saved in the `model_ROC_and_accuracy_plots` folder.
 
 Additionally, a csv file labled:
-- <model_type>_optimal_wagers.csv
+- `<model_type>_optimal_wagers.csv`
 
 Details the optimal wagers as determined by the optimization strategy.
 
 
 ## Context for the Project
-This project was completed as a final project for ASEN 6519: Optimization Algorithms and Applications at the University of Colorado Boulder. In addition to the code base, a final paper was written and a presenation was given to the class detailing the data collection, feature extraction, model training, and optimization strategy. This paper is included in the repository as "Bagley_Aidan_ASEN6519_Final_Project_Mixed_Integer_Linear_Parlays.pdf" and the presentation is included as "Mixed-Integer Linear Parlays, An Optimized Sports Betting Approach.pdf".
+This project was completed as a final project for ASEN 6519: Optimization Algorithms and Applications at the University of Colorado Boulder. In addition to the code base, a final paper was written, and a presentation was given to the class detailing the data collection, feature extraction, model training, and optimization strategy. 
+
+The final paper is included in the repository as `Bagley_Aidan_ASEN6519_Final_Project_Mixed_Integer_Linear_Parlays.pdf`, and the presentation is included as `Mixed-Integer Linear Parlays, An Optimized Sports Betting Approach.pdf`.
+
+The project was completed by Aidan Bagley, a graduate student in the Aerospace Engineering Sciences department at the University of Colorado Boulder. The project was completed in the Fall 2024 semester. 
+
+The project was driven by the desire to apply optimization techniques to a real-world problem, particularly in light of the recent legalization of sports betting in Colorado. It also provided an opportunity to explore the combination of supervised machine learning, API data collection, and optimization techniques to develop a profitable betting strategy.
+
 
 ## Solution Approach
 ### Data Collection

@@ -89,7 +89,7 @@ This project aimed to compare two different supervised machine learning models f
 
 Both models were trained using the same feature set, with a 75/25 train/test split. The models were validated against results from the 2024-2025 season.
 
-In addition to evaluating the models based on accuracy, they were also assessed on their ability to predict the probabilities of a home team win. This was a key factor in optimizing the expected value of a wager, which is discussed in the next section.
+In addition to evaluating the models based on accuracy, they were also assessed on their ability to predict the probabilities of a home team win. This was a key factor in predicting the expected value of a wager, which is discussed in the next section.
 
 
 ### Optimization Strategy
@@ -98,14 +98,14 @@ The goal of the optimization strategy was to maximize the expected value of prof
 
 The decision variables were whether to bet on a given game, and if so, how much money to bet. The objective function represented the expected value of profit from betting on the games and was calculated using the following formula:
 
-\[
-    \mathbb{E}[b_i] = \hat{p_i} \cdot (b_i \cdot \mathcal{R}_i) - (1-\hat{p_i}) \cdot b_i
-\]
+$$
+\mathbb{E}[b_i] = \hat{p_i} \cdot (b_i \cdot \mathcal{R}_i) - (1-\hat{p_i}) \cdot b_i
+$$
 
 Where:
-- \(\hat{p_i}\) is the predicted probability of the home team winning the game \(i\),
-- \(b_i\) is the amount of money bet on game \(i\),
-- \(\mathcal{R}_i\) is the moneyline multiplier for the home team winning game \(i\).
+- $\hat{p_i}$ is the predicted probability of the home team winning the game $i$,
+- $b_i$ is the amount of money bet on game $i$,
+- $\mathcal{R}_i$ is the moneyline multiplier for the home team winning game $i$.
 
 The constraints for the optimization problem were as follows:
 - The total amount of money bet could not exceed a set budget.
@@ -127,7 +127,7 @@ While the MLP had a higher recall value, implying it was able to identify home l
 Overall, the results comparing these models are tabulated in Tables 2, 3, 4, and 5, with the associated Figures 2 and 3 in the attached paper.
 
 
-The optimization strategy was able to produce a betting strategy that, when given a $1000 budget over four separate days, resulted in a loss of $353.33. While this is not an ideal outcome, it is worth noting that the optimizer typically chose to wager very large amounts on games with moderate probabilities of winning but extremely large profit multipliers. 
+The optimization strategy was able to produce a betting strategy that, when given a $1000 budget over four separate days, resulted in a loss of $353.33 overall. While this is not an ideal outcome, it is worth noting that the optimizer typically chose to wager very large amounts on games with moderate probabilities of winning but extremely large profit multipliers. 
 
 In other words, the optimizer tended to "go big" when there was a chance to win a substantial amount of money. This behavior aligns with the objective function, which did not incentivize taking safer wagers with higher probabilities of winning but lower profit multipliers. This is an expected limitation of the formulation and is often referred to as gambling bias. 
 

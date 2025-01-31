@@ -349,6 +349,8 @@ def compare_model_to_actual_results(gameLogs, probability_dfs, model):
     ### Input:  gameLogs: The game logs dataframe
     ###         probability_dfs: The list of probability dataframes
     ###         model: The model name
+    ###
+    ### Output: probability_df: The probability dataframe for the validation data
     
     def plot_results(probability_df, model, i):
         """Plots the results of the model's predictions."""
@@ -546,6 +548,9 @@ def combine_odds_with_ML_probabilities(filename, gameLogs_probability_df):
     
 def solve_LP(odds):
     """Solves the linear program for the optimal wagers."""
+    ### Input:  odds: The odds dataframe
+    ###
+    ### Output: z: The optimal wagers given the avaiable odds
     
     # Create a linear program to optimize 3-leg parlays
     prob = p.LpProblem("Parlay", p.LpMaximize)
@@ -621,8 +626,8 @@ def potential_win(moneyLine):
 if __name__ == '__main__':
     """Main function to load in feature sets, create SVML model, and solve MILP for optimal wagers"""
     # Load feature and gamelog sets
-    feature_set_filename = '2020-25_nbaHomeWinLossModelDataset.csv'
-    gameLogs_filename = '2020-25_gameLogs.csv'
+    feature_set_filename = 'csv_data_files/2020-25_nbaHomeWinLossModelDataset.csv'
+    gameLogs_filename = 'csv_data_files/2020-25_gameLogs.csv'
     
     # Generate model
     #modelname = 'logistic_regression'

@@ -62,6 +62,8 @@ The [NBA API](https://github.com/swar/nba_api.git) provides an API client that a
 
 This data includes details about game outcomes and team statistics for each individual game. Once collected, the data was cleaned and processed using the `pandas` library in Python to create a feature set for the machine learning model.
 
+Notably, the data collection process was time-consuming due to the API's rate limits, which required a delay between requests to avoid being blocked. This resulted in a lengthy data collection process, which was mitigated by saving the data to CSV files for future use. Additionally, there are gaps in the data due to failed API requests, however, the data was still sufficient for the purposes of this project.
+
 ### Feature Extraction
 
 In this project, the following feature set was used:
@@ -109,11 +111,14 @@ Where:
 
 The constraints for the optimization problem were as follows:
 - The total amount of money bet could not exceed a set budget.
-- The total number of bets could not exceed a specified limit.
+- The total number of bets must be equal to half of the available wagers.
 - The amount of money bet on a single game could not exceed a set maximum bet.
-- The amount of money bet on a single game must be non-negative.
+- The amount of money bet on a single game must be at least the maximum buget divided by four times the number of wagers.
 - The decision variable for betting on a game must be binary (i.e., either bet or not bet).
 
+The optimization problem was solved using the `PuLP` library in Python, which provides an interface to various optimization solvers. The solution to the optimization problem provided the optimal betting strategy for maximizing the expected value of profit. 
+
+Notably, the second and fourth constraints were an initial attempt at mitigating risk by forcing the optimizer to spread out smaller bets across multiple games. This was an attempt to reduce the impact of a single large bet on the overall outcome of the strategy. This was not entirely successful as discussed in the results section. 
 
 
 ## Results
@@ -124,7 +129,7 @@ Additionally, the logistic regression model produced much less extreme probabili
 
 While the MLP had a higher recall value, implying it was able to identify home losses more effectively, this was likely due to the model simply classifying more games into the zero class, which is not necessarily indicative of a better model. 
 
-Overall, the results comparing these models are tabulated in Tables 2, 3, 4, and 5, with the associated Figures 2 and 3 in the attached paper.
+Overall, the results comparing these models are tabulated in Tables 2, 3, 4, and 5, with the associated Figures 2 and 3 in the attached paper. Notably, the logistic regression model out performed the MLP and thus was used in the optimization strategy.
 
 
 The optimization strategy was able to produce a betting strategy that, when given a $1000 budget over four separate days, resulted in a loss of $353.33 overall. While this is not an ideal outcome, it is worth noting that the optimizer typically chose to wager very large amounts on games with moderate probabilities of winning but extremely large profit multipliers. 
@@ -136,8 +141,8 @@ Moderately probable events with the potential for high payouts are often overval
 
 ## Contributions
 
-The data collection, feature extraction, and logistic regression model training were heavily guided by a tutorial in the NBA_api documentation titled "Home Team Win-Loss Modeling." While the tutorial was closely followed, the code was adapted to fit the specific needs of this project. 
+The data collection, feature extraction, and logistic regression model training were heavily guided by a tutorial in the NBA_api documentation titled "Home Team Win-Loss Modeling." While the tutorial was closely followed for creating and manipulating the data frames, the code was adapted to meet the specific needs of this project. 
 
-The MLP model training and optimization strategy were developed independently. The optimization strategy was implemented with the help of the PuLP library in Python. 
+The **MLP model training** and **optimization strategy** were developed independently by me. The optimization strategy was implemented with the help of the **PuLP library** in Python.
 
-The final paper and presentation were completed independently.
+The final paper and presentation were completed independently, without collaboration, although I did refer to external resources like the `nba_api` tutorial for guidance.

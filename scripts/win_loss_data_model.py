@@ -454,7 +454,7 @@ def combine_odds_with_ML_probabilities(filename, gameLogs_probability_df):
     ### Input:  filename: The filename of the odds 
     ###         gameLogs_probability_df: The game logs probability dataframe
     ###
-    ### Output: None
+    ### Output: betting_odds.csv: The optimal wagers for the given odds and model predictions
     
     # Create example dataframe of odds csv with columns
     #   Index(['DATE', 'AWAY', 'HOME', 'AWAY_MONEYLINE', 'HOME_MONEYLINE'], dtype='object')
@@ -607,7 +607,6 @@ def solve_LP(odds):
     # Return the optimal wagers
     return z
             
-            
 
 def potential_win(moneyLine):
     """Calculates the potential win for a given moneyline."""
@@ -630,8 +629,8 @@ if __name__ == '__main__':
     gameLogs_filename = 'csv_data_files/2020-25_gameLogs.csv'
     
     # Generate model
-    #modelname = 'logistic_regression'
-    modelname = 'neural_network'
+    modelname = 'logistic_regression'
+    #modelname = 'neural_network'
     
     # Load feature set    
     data = pd.read_csv(feature_set_filename, delimiter=',', header=0, dtype=str)
@@ -643,13 +642,13 @@ if __name__ == '__main__':
     if modelname == 'logistic_regression':    
         model, training_probability_df, validation_probability_df = generate_logistic_model(data)
         validation_gameLogs_probability_df = compare_model_to_actual_results(gameLogs, [training_probability_df, validation_probability_df], modelname)
-        combine_odds_with_ML_probabilities('betting_odds.csv', validation_gameLogs_probability_df)
+        combine_odds_with_ML_probabilities('csv_data_files/betting_odds.csv', validation_gameLogs_probability_df)
 
     # Generate model neural network
     elif modelname == 'neural_network':
         model, training_probability_df, validation_probability_df = generate_neural_network_model(data)
         validation_gameLogs_probability_df = compare_model_to_actual_results(gameLogs, [training_probability_df, validation_probability_df], modelname)
-        combine_odds_with_ML_probabilities('betting_odds.csv', validation_gameLogs_probability_df)
+        combine_odds_with_ML_probabilities('csv_data_files/betting_odds.csv', validation_gameLogs_probability_df)
 
     else:
         print('Invalid model name. Please choose either logistic_regression or neural_network.')

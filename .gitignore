@@ -22,7 +22,6 @@ Thumbs.db
 # Ignore IDE-specific files
 .vscode/
 .idea/
-nba_api/
 env/
 moredataFiles/
 moremoreplots/

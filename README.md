@@ -1,30 +1,31 @@
 # Mixed-Integer Linear Parlays, An Optimized Sports Betting Approach
 
 ## Overview of the Project
-This project used the NBA_api to gather data on the outcomes of games from the 2020-2024 NBA seasons. The data was used create a characteristic feature set that trained a supervised machine learning model in order predict the outcome a home team winning any given game in the 2024-2025 season. Using the predictions, a betting strategy was developed to maximize the expected value of profit that was solved using a mixed-integer linear programming model.
+This project uses the `NBA_api` to gather data on the outcomes of NBA games from the 2020-2024 seasons. The data was used to create a characteristic feature set that trained a supervised machine learning model to predict the outcome of a home team winning a given game in the 2024-2025 season. Using these predictions, a betting strategy was developed to maximize the expected value of profit, which was solved using a mixed-integer linear programming (MILP) formulation.
+
 
 ## Installation
 To install the necessary packages to run this project, use the following command:
 ```bash
-pip install nba_api numpy pandas matplotlib sklearn pulp json difflib requests time
+pip install nba_api numpy pandas matplotlib scikit-learn pulp json difflib requests time
 ```
 
 ## Usage
-To create the data sets for the project, run the following command:
+To create the datasets for the project, run the following command:
 ```bash
-win_loss_data_prep.py
+python win_loss_data_prep.py
 ```
-This tends to take several hours due to api call limits and the vast amount of data being requested. However, the data is already saved in the csv_data_file folder so this step can be skipped. 
+This process may take several hours due to API call limits and the large volume of data being requested. However, the data is already saved in the `csv_data_file` folder, so this step can be skipped. 
 
-Specifically, the following files in the csv_data_files folder is are used to train the machine learning model and create the feature set for the optimization strategy: 
-- 2020-25_scheduleFrame.csv
-- 2020-25_gameLogFrame.csv
-- 2020-25_nbaHomeWinLossModelDataSet.csv
+The following files in the `csv_data_files` folder are used to train the machine learning model and create the feature set for the optimization strategy: 
+- `2020-25_scheduleFrame.csv`
+- `2020-25_gameLogFrame.csv`
+- `2020-25_nbaHomeWinLossModelDataSet.csv`
 
-The other following files in the csv_data_files folder were created to ensure functionality of the code but are not used in the final project:
-- 2024-25_scheduleFrame.csv
-- 2024-25_gameLogFrame.csv
-- 2024-25_nbaHomeWinLossModelDataSet.csv
+The following files were created to ensure functionality of the code but are not used in the final project:
+- `2024-25_scheduleFrame.csv`
+- `2024-25_gameLogFrame.csv`
+- `2024-25_nbaHomeWinLossModelDataSet.csv`
 
 To train the machine learning model and evaluate the model's performance, run the following command after specifiying the model type in the main function:
 ```bash

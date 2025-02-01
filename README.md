@@ -26,7 +26,7 @@ To create the datasets for the project, run the `win_loss_data_prep.py` script u
 ```bash
 /path/to/python/interpreter /path/to/Mixed-Integer-Linear-Parlays-for-Optimal-Sports-Wagering/scripts/win_loss_data_prep.py
 ```
-This process may take several hours due to API call limits and the large volume of data being requested. However, the data is already saved in the `csv_data_file` folder, so this step can be skipped. 
+This process may take several hours due to API call limits and the large volume of data being requested. However, the data is already saved in the `csv_data_file` folder, so this step can be skipped unless you want to update the data set for new results. 
 
 The following files in the `csv_data_files` folder are used to train the machine learning model containing the feature set for the model: 
 - `2020-25_scheduleFrame.csv`
@@ -90,9 +90,9 @@ In this project, the following feature set was used:
 - **Rolling Scoring Margin**: A time-based rolling metric of the average scoring margin.
 - **Number of Rest Days**: The number of rest days the home team has had before the game.
 
-These features were recommended in a tutorial provided within the [nba_api repository](https://github.com/swar/nba_api).
+These features were recommended in a tutorial provided within the [NBA API](https://github.com/swar/nba_api.git).
 
-The rolling statistics are important to alleviate the stiffness of the dataset as the season progresses. They aim to encapsulate the recent performance of a team, providing a more accurate representation of the team's current state.
+The first three features are characteristic of a team's success rate both at home, away, and overall. The offensive efficiency and rolling offensive efficiency features provide insight into a team's offensive capabilities. Specifically, the rolling statistics are important to alleviate the stiffness of the dataset as the season progresses. They aim to encapsulate the recent performance of a team, providing a more accurate representation of the team's current state. Lastly, the number of rest days is included as a feature to account for the potential impact of fatigue on a team's performance.
 
 
 ### Model Training
@@ -132,14 +132,14 @@ The constraints for the optimization problem were as follows:
 
 The optimization problem was solved using the `PuLP` library in Python, which provides an interface to various optimization solvers. The solution to the optimization problem provided the optimal betting strategy for maximizing the expected value of profit. 
 
-Notably, the second and fourth constraints were an initial attempt at mitigating risk by forcing the optimizer to spread out smaller bets across multiple games. This was an attempt to reduce the impact of a single large bet on the overall outcome of the strategy. This was not entirely successful as discussed in the results section. 
+Notably, the second and fourth constraints were an initial attempt at mitigating risk by forcing the optimizer to spread out smaller bets across multiple games. This was an attempt to reduce the impact of a single large bet on the overall outcome of the strategy. This was not entirely successful as discussed in the results section and slightly different than formulation presented in the paper. 
 
 
 ## Results
 
 The results of the project were mixed (no pun intended). The logistic regression model outperformed the MLP model in terms of overall accuracy and its ability to differentiate between the positive and zero classes. This suggests that it was more effective in identifying home team wins and distinguishing between a home team win and loss. 
 
-Additionally, the logistic regression model produced much less extreme probabilities, which helped in the subsequent expected value calculation. In contrast, the MLP had a much larger cross-entropy loss, indicating that it was less confident in its predictions. 
+Additionally, the logistic regression model produced much less extreme probabilities, which helped in the subsequent expected value calculation. In contrast, the MLP predicted more extreme probabilities and had a much larger cross-entropy loss, indicating that it was less confident in its predictions. 
 
 While the MLP had a higher recall value, implying it was able to identify home losses more effectively, this was likely due to the model simply classifying more games into the zero class, which is not necessarily indicative of a better model. 
 
@@ -152,6 +152,14 @@ In other words, the optimizer tended to "go big" when there was a chance to win 
 
 Moderately probable events with the potential for high payouts are often overvalued by gamblers, and this bias is reflected in the optimizer's strategy.
 
+
+## Future Work
+While the logistic regression model performed well in this project, there are several areas for future work and improvement:
+- **Feature Engineering**: Additional features could be explored to improve the model's predictive power. For example, incorporating player statistics, team injuries, or other external factors could enhance the model's performance.
+- **Model Selection**: Further exploration of ensamble machine learning models, such as random forests or gradient boosting, could be beneficial. These models may capture more complex relationships in the data and improve predictive accuracy. Furthermore, when using these models, less restrictive feature sets could be explored to see if the model can identify the most important features without directly specifying them.
+- **Optimization Strategy**: The optimization strategy could be refined to include additional constraints or objectives. For example, incorporating a risk management component to limit the potential loss from a single bet could be beneficial. Additionally, exploring different objective functions that balance profit potential and risk could lead to a more robust betting strategy.
+- **Feature Set Sample Size**: The model could benefit from a larger sample size of games to train on. Additional seasons of data could provide more insights into team performance and improve the model's predictive power.
+- **Avaiable Wager Sample Size**: The optimization strategy could benefit from a larger sample size of available wagers. This would allow for more flexibility in the betting strategy and potentially improve the overall expected value of profit.
 
 ## Contributions
 

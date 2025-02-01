@@ -1,4 +1,4 @@
-### This script contains functions to load and prepare the data for the NBA Home Win Loss Model
+### This script contains functions to load and prepare the data for the NBA Home Win Loss Supervised Machine Learning Model
 ### The data is loaded from the NBA API and saved to CSV files for future use in the model
 ### The data is loaded in three steps: scheduleFrame, gameLogs, and gameLogFeatureSet
 ### The scheduleFrame contains the schedule for each team for each season
@@ -30,8 +30,20 @@ import requests
 
 # Retry wrapper for HTTP requests
 def retry(func, retries=10, backoff_factor=1.0):
+    ### Inputs: func - function to retry
+    ###         retries - number of retries to attempt
+    ###         backoff_factor - backoff factor for exponential backoff
+    ###
+    ### Output: retry_wrapper - wrapper function to retry the function
     """Retry decorator for handling RequestExceptions"""
+    
     def retry_wrapper(*args, **kwargs):
+        """Wrapper function to retry the function"""
+        ### Inputs: *args - positional arguments
+        ###         **kwargs - keyword arguments
+        ###
+        ### Output: func(*args, **kwargs) - function to retry
+        
         attempts = 0
         while attempts < retries:
             try:
@@ -72,21 +84,37 @@ def getSeasonScheduleFrame(seasons,seasonType):
     # Get GameDate from matchup column: 05/16/2021
     def getGameDate(matchup):
         """Extracts the game date from the matchup column"""
+        ### Inputs: matchup - matchup column
+        ### 
+        ### Output: matchup.partition(' at')[0][:10] - first ten characters of intial partition containing the game date
+        
         return matchup.partition(' at')[0][:10] # first ten characters of intial partition
 
     # Get Home team nickname from matchup column: Hawks
     def getHomeTeam(matchup):
         """Extracts the home team nickname from the matchup column"""
+        ### Inputs: matchup - matchup column
+        ###
+        ### Output: matchup.partition(' at')[2] - last partition of matchup column containing the home team nickname
+        
         return matchup.partition(' at')[2] # last partition of matchup column
 
     # Get Away team nickname from matchup column: Rockets
     def getAwayTeam(matchup):
         """Extracts the away team nickname from the matchup column"""
+        ### Inputs: matchup - matchup column
+        ###
+        ### Output: matchup.partition(' at')[0][10:] - last characters of first partition of matchup column containing the away team nickname
+        
         return matchup.partition(' at')[0][10:] # last characters of first partition of matchup column
 
     # Match nickname from matchup column to the lookup team table to extract the team ID
     def getTeamIDFromNickname(nickname):
         """Extracts the team ID using the team lookup table and the team nickname"""
+        ### Inputs: nickname - team nickname
+        ###
+        ### Output: team ID - ID of the team
+        
         return teamLookup.loc[teamLookup['nickname'] == difflib.get_close_matches(nickname,teamLookup['nickname'],1)[0]].values[0][0] 
     
     # Get Regular Season Schedule Function
@@ -182,6 +210,11 @@ def getSingleGameMetrics(gameID,homeTeamID,awayTeamID,awayTeamNickname,seasonYea
     @retry
     def getGameStats(teamID, gameID, seasonYear):
         """Creates a DataFrame containing the total team stats for a single game"""
+        ### Inputs: teamID - ID of the team to get stats for (1610612737, 1610612738, etc.)
+        ###         gameID - ID of the game to get stats for (0022001066, 0022001067, etc.)
+        ###         seasonYear - season of the game (2020-21, 2021-22, etc.)
+        ###
+        ### Output: gameStats - DataFrame containing the total team stats for a single game
         try:
             # Add '00' to the gameID to match the format of the API response
             gameID = '00' + str(gameID)
@@ -225,7 +258,6 @@ def getSingleGameMetrics(gameID,homeTeamID,awayTeamID,awayTeamNickname,seasonYea
     data.at[1,'NICKNAME'] = awayTeamNickname # away team nickname
     data.at[1,'TEAM_ID'] = awayTeamID # away team ID
     
-    # Calculate additional columns
     # Away team stats
     data.at[1,'OFFENSIVE_EFFICIENCY'] = (data.at[1,'FG'] + data.at[1,'AST'])/(data.at[1,'FGA'] - data.at[1,'OFF_REB'] + data.at[1,'AST'] + data.at[1,'TOTAL_TURNOVERS'])
     data.at[1,'SCORING_MARGIN'] = data.at[1,'PTS'] - data.at[0,'PTS']
@@ -263,6 +295,10 @@ def getGameLogs(gameLogs, scheduleFrame):
     # Sets flag to 1 if game was played at home and there was a corresponding win or loss
     def getHomeAwayFlag(gameDF):
         """Sets a flag to 1 if the game was played at home and there was a corresponding win or loss"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team with the HOME_FLAG and AWAY_FLAG columns added
+        
         gameDF['HOME_FLAG'] = np.where((gameDF['W_HOME']==1) | (gameDF['L_HOME']==1),1,0)
         gameDF['AWAY_FLAG'] = np.where((gameDF['W_ROAD']==1) | (gameDF['L_ROAD']==1),1,0)
         return gameDF
@@ -270,6 +306,10 @@ def getGameLogs(gameLogs, scheduleFrame):
     # Gets the total number of games and counts the number of wins for each team up to that point to calculate win percentage
     def getTotalWinPctg(gameDF):
         """Gets the total win percentage for each team"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team with the TOTAL_GAMES_PLAYED, TOTAL_WINS, and TOTAL_WIN_PCTG columns added
+        
         gameDF['TOTAL_GAMES_PLAYED'] = gameDF.groupby(['TEAM_ID','SEASON'])['GAME_DATE'].rank(ascending=True)
         gameDF['TOTAL_WINS'] = gameDF.sort_values(by='GAME_DATE').groupby(['TEAM_ID','SEASON'])['W'].cumsum()
         gameDF['TOTAL_WIN_PCTG'] = gameDF['TOTAL_WINS']/gameDF['TOTAL_GAMES_PLAYED']
@@ -278,6 +318,10 @@ def getGameLogs(gameLogs, scheduleFrame):
     # Gets the home win percentage for each team
     def getHomeWinPctg(gameDF):
         """Gets the home win percentage for each team"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team with the HOME_GAMES_PLAYED, HOME_WINS, and HOME_WIN_PCTG columns added
+        
         gameDF['HOME_GAMES_PLAYED'] = gameDF.sort_values(by='GAME_DATE').groupby(['TEAM_ID','SEASON'])['HOME_FLAG'].cumsum()
         gameDF['HOME_WINS'] = gameDF.sort_values(by='GAME_DATE').groupby(['TEAM_ID','SEASON'])['W_HOME'].cumsum()
         gameDF['HOME_WIN_PCTG'] = gameDF['HOME_WINS']/gameDF['HOME_GAMES_PLAYED']
@@ -286,6 +330,10 @@ def getGameLogs(gameLogs, scheduleFrame):
     # Gets the away win percentage for each team
     def getAwayWinPctg(gameDF):
         """Gets the away win percentage for each team"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team with the AWAY_GAMES_PLAYED, AWAY_WINS, and AWAY_WIN_PCTG columns added
+        
         gameDF['AWAY_GAMES_PLAYED'] = gameDF.sort_values(by='GAME_DATE').groupby(['TEAM_ID','SEASON'])['AWAY_FLAG'].cumsum()
         gameDF['AWAY_WINS'] = gameDF.sort_values(by='GAME_DATE').groupby(['TEAM_ID','SEASON'])['W_ROAD'].cumsum()
         gameDF['AWAY_WIN_PCTG'] = gameDF['AWAY_WINS']/gameDF['AWAY_GAMES_PLAYED']
@@ -294,18 +342,30 @@ def getGameLogs(gameLogs, scheduleFrame):
     # Gets the rolling average offensive efficiency for each team taking average of last 3 games
     def getRollingOE(gameDF):
         """Gets the rolling average offensive efficiency for each team taking average of last 3 games"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team with the ROLLING_OE column added
+        
         gameDF['ROLLING_OE'] = gameDF.sort_values(by='GAME_DATE').groupby(['TEAM_ID','SEASON'])['OFFENSIVE_EFFICIENCY'].transform(lambda x: x.rolling(3, 1).mean())
         return gameDF
     
     # Gets the rolling average scoring margin for each team taking average of last 3 games
     def getRollingScoringMargin(gameDF):
         """Gets the rolling average scoring margin for each team taking average of last 3 games"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team with the ROLLING_SCORING_MARGIN column added
+        
         gameDF['ROLLING_SCORING_MARGIN'] = gameDF.sort_values(by='GAME_DATE').groupby(['TEAM_ID','SEASON'])['SCORING_MARGIN'].transform(lambda x: x.rolling(3, 1).mean())
         return gameDF
     
     # Gets the current game data, shifts it back one, then caluclates the time inbetween in days floating point
     def getRestDays(gameDF):
         """Calculates the number of rest days between games for each team"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team with the NUM_REST_DAYS column added
+        
         # Ensure GAME_DATE is in datetime format
         gameDF['GAME_DATE'] = pd.to_datetime(gameDF['GAME_DATE'], errors='coerce')
 
@@ -363,7 +423,6 @@ def getGameLogs(gameLogs, scheduleFrame):
     
     # Concatenate all DataFrames in the list into a single DataFrame
     gameLogs = pd.concat(gameLogs_list, ignore_index=True)
-
     
     # Add additional columns to the gameLogs DataFrame
     gameLogs = getHomeAwayFlag(gameLogs)
@@ -391,6 +450,10 @@ def getGameLogFeatureSet(gameDF):
     # Allows for the shifting of game log records to get the previous game's offensive efficiency, home win percentage, away win percentage, total win percentage, rolling scoring margin, and rolling offensive efficiency
     def shiftGameLogRecords(gameDF):
         """Shifts the game log records to get the previous game's offensive efficiency, home win percentage, away win percentage, total win percentage, rolling scoring margin, and rolling offensive efficiency"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team for each season
+        ###
+        ### Output: gameDF - DataFrame containing the game logs for each team for each season with the shifted columns added (next game records as new rows)
+        
         gameDF['LAST_GAME_OE'] = gameDF.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['OFFENSIVE_EFFICIENCY'].shift(1)
         gameDF['LAST_GAME_HOME_WIN_PCTG'] = gameDF.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['HOME_WIN_PCTG'].shift(1)
         gameDF['LAST_GAME_AWAY_WIN_PCTG'] = gameDF.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['AWAY_WIN_PCTG'].shift(1)
@@ -401,6 +464,10 @@ def getGameLogFeatureSet(gameDF):
     # Creates a home team frame
     def getHomeTeamFrame(gameDF):
         """Extracts the home team frame from the gameDF"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team for each season
+        ###
+        ### Output: homeTeamFrame - DataFrame containing the home team frame
+        
         homeTeamFrame = gameDF[gameDF['CITY'] != 'OPPONENTS']
         homeTeamFrame = homeTeamFrame[['LAST_GAME_OE','LAST_GAME_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_GAME_AWAY_WIN_PCTG','LAST_GAME_TOTAL_WIN_PCTG','LAST_GAME_ROLLING_SCORING_MARGIN','LAST_GAME_ROLLING_OE','W','TEAM_ID','GAME_ID','SEASON']]
 
@@ -419,6 +486,9 @@ def getGameLogFeatureSet(gameDF):
     # Creates an away team frame
     def getAwayTeamFrame(gameDF):
         """Extracts the away team frame from the gameDF"""
+        ### Inputs: gameDF - DataFrame containing the game logs for each team for each season
+        ###
+        ### Output: awayTeamFrame - DataFrame containing the away team frame
         
         # Strip whitespace from CITY column
         gameDF['CITY'] = gameDF['CITY'].str.strip()    
@@ -541,6 +611,7 @@ def reload_feature_set(gameLogs_filename, gameLogFeatureSet_filename):
     
     
 if __name__ == "__main__":
+    """Main function to initialize or reload the data sets"""
     
     # Set to True to initialize data sets, False to reload data sets
     initialize_data_sets = False

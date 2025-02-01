@@ -1,7 +1,6 @@
 ### This script is used to generate either a logistic regression or neural network model to predict the outcome of NBA games.
 ### The model is then used to generate optimal wagers based on the model's predictions and the odds of the games.
-### This script l outputs the results of the model evaluation, the ROC curve, the time history of correct predictions, and the optimal wagers for the given odds.
-
+### This script prints the results of the model evaluation, plots the ROC curve and the time history of correct predictions, and outputs a csv of the optimal wagers for the given odds.
 
 # Import pandas data frames
 import pandas as pd
@@ -612,6 +611,7 @@ def potential_win(moneyLine):
     ### Input:  moneyLine: The moneyline odds
     ###
     ### Output: The potential winning multiplier for a given wager
+    
     if moneyLine > 0:
         return (moneyLine / 100)
     else:
@@ -622,7 +622,7 @@ def potential_win(moneyLine):
 
 
 if __name__ == '__main__':
-    """Main function to load in feature sets, create SVML model, and solve MILP for optimal wagers"""
+    """Main function to load in feature sets, create SV-ML model, and solve MILP for optimal wagers"""
     # Load feature and gamelog sets
     feature_set_filename = 'csv_data_files/2020-25_nbaHomeWinLossModelDataset.csv'
     gameLogs_filename = 'csv_data_files/2020-25_gameLogs.csv'
